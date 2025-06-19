@@ -1,93 +1,103 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Interactive Photo Gallery</title>
-    <style>
-        #image {
-            width: 600px;
-            height: 400px;
-            border: 2px solid black;
-            margin-bottom: 20px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #333;
-            font-family: Arial, sans-serif;
-        }
-        .thumbnail {
-            width: 150px;
-            height: 100px;
-            margin: 5px;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .thumbnail:hover {
-            border-color: #007BFF;
-        }
-        .gallery {
-            display: flex;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Photo Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    figure {
+      border: 2px solid #ccc;
+      padding: 10px;
+      background-color: white;
+      transition: border-color 0.3s;
+    }
+    figure:focus {
+      border-color: blue;
+      outline: none;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+    figcaption {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+  </style>
 </head>
-<body>
-    <h1>Interactive Photo Gallery</h1>
+<body onload="initGallery()">
 
-    <!-- Phần hiển thị ảnh và chữ -->
-    <div id="image">
-        Hover over an image below to display here.
-    </div>
+  <h1>My Accessible Photo Gallery</h1>
+  <div class="gallery" id="gallery">
+    <figure>
+      <img src="https://picsum.photos/id/1015/300/200" alt="Mountain landscape" />
+      <figcaption>Mountain View</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1025/300/200" alt="Cute dog close-up" />
+      <figcaption>Dog Portrait</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1003/300/200" alt="City skyline" />
+      <figcaption>City Lights</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1016/300/200" alt="Foggy forest" />
+      <figcaption>Forest Walk</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1005/300/200" alt="Colorful balloons" />
+      <figcaption>Balloon Festival</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1011/300/200" alt="Beach sunset" />
+      <figcaption>Sunset at the Beach</figcaption>
+    </figure>
+  </div>
 
-    <!-- Các ảnh thumbnail -->
-    <div class="gallery">
-        <img src="https://via.placeholder.com/150x100/FF0000/FFFFFF?text=Red" 
-             alt="Ảnh màu đỏ" 
-             class="thumbnail"
-             onmouseover="upDate(this)" 
-             onmouseout="undo()" />
+  <script>
+    function initGallery() {
+      console.log("Page loaded. Initializing gallery...");
 
-        <img src="https://via.placeholder.com/150x100/00FF00/FFFFFF?text=Green" 
-             alt="Ảnh màu xanh lá" 
-             class="thumbnail"
-             onmouseover="upDate(this)" 
-             onmouseout="undo()" />
+      const figures = document.querySelectorAll("figure");
+      for (let i = 0; i < figures.length; i++) {
+        figures[i].setAttribute("tabindex", "0");
 
-        <img src="https://via.placeholder.com/150x100/0000FF/FFFFFF?text=Blue" 
-             alt="Ảnh màu xanh dương" 
-             class="thumbnail"
-             onmouseover="upDate(this)" 
-             onmouseout="undo()" />
-    </div>
+        figures[i].addEventListener("mouseover", function () {
+          this.style.borderColor = "green";
+          console.log("Mouse over image " + (i + 1));
+        });
 
-    <script>
-        function upDate(previewPic) {
-            console.log("Event triggered on image:", previewPic);
+        figures[i].addEventListener("mouseleave", function () {
+          this.style.borderColor = "#ccc";
+        });
 
-            // Lấy phần tử có id="image"
-            let imageDiv = document.getElementById('image');
+        figures[i].addEventListener("focus", function () {
+          this.style.borderColor = "blue";
+          console.log("Focused on image " + (i + 1));
+        });
 
-            // Thay đổi background image
-            imageDiv.style.backgroundImage = "url('" + previewPic.src + "')";
+        figures[i].addEventListener("blur", function () {
+          this.style.borderColor = "#ccc";
+        });
+      }
+    }
+  </script>
 
-            // Thay đổi nội dung chữ
-            imageDiv.innerHTML = previewPic.alt;
-
-            console.log("Alt text:", previewPic.alt);
-            console.log("Image src:", previewPic.src);
-        }
-
-        function undo() {
-            let imageDiv = document.getElementById('image');
-
-            // Trả về trạng thái mặc định
-            imageDiv.style.backgroundImage = "none";
-            imageDiv.innerHTML = "Hover over an image below to display here.";
-        }
-    </script>
 </body>
 </html>
